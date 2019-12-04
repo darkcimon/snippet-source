@@ -1,0 +1,47 @@
+#@ state의 초기화를 props 에서 하게 될때, Component의 constructor나 getInitailState에서 하게되면, 해당 function은 객체 생성이나 state의 초기화에 처음 사용되기 때문에 props의 변경으로 인한 반영이 되지 않게 된다. 
+
+ex)
+```javascript
+class SampleComponent extends Component {
+  // constructor function (or getInitialState)
+  constructor(props) {
+    super(props);
+    this.state = {
+      flag: false
+    };
+  }
+
+  render() {
+    return <div>{this.props.inputValue && <AnotherComponent/>}</div>
+  }
+}
+```
+
+#@ findDOMNode(string) 을 통한 접근은 legacy한 방식. querySelector의 dom traversing과 같은 방식의 비효율. 
+객체 property binding을 통해 비효율을 없애자. 
+ex)
+```javascript
+class Field extends Component {
+  render() {
+    return (
+      <input type='text' ref={this.props.inputRef}/>
+    )
+  }
+}
+
+class MyComponent extends Component {
+  componentDidMount() {
+    this.inputNode.focus();
+  }
+
+  render() {
+    return (
+      <div>
+        Hello,
+        <Field inputRef={node => this.inputNode = node}/>
+      </div>
+    )
+  }
+}
+```
+
